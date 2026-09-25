@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnSphere — Learn. Practice. Grow.</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ================= LOGIN PAGE ================= -->
+  <section id="loginPage" class="login-page hidden" aria-label="Login">
+    <form id="loginForm" class="login-card">
+      <div class="logo big"><span class="logo-icon">◎</span> LearnSphere</div>
+      <p class="muted">Learn. Practice. Grow.</p>
+      <label>Email<input type="email" id="loginEmail" value="arumugavalli@learnsphere.edu" required /></label>
+      <label>Password<input type="password" id="loginPassword" placeholder="Any password (min 4 chars)" required minlength="4" /></label>
+      <button type="submit" class="btn primary full">Login</button>
+      <p class="muted small">Demo: any email and password with 4+ characters.</p>
+    </form>
+  </section>
+
+  <!-- ================= APP LAYOUT ================= -->
+  <div id="app" class="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation">
+      <div class="logo"><span class="logo-icon">◎</span> LearnSphere</div>
+      <p class="tagline">Learn. Practice. Grow.</p>
+      <nav>
+        <ul id="navMenu" class="nav-menu">
+          <li><button class="nav-link active" data-page="dashboard">🏠 Dashboard</button></li>
+          <li><button class="nav-link" data-page="mycourses">📚 My Courses</button></li>
+          <li><button class="nav-link" data-page="explore">🧭 Explore Courses</button></li>
+          <li><button class="nav-link" data-page="progress">📈 My Progress</button></li>
+          <li><button class="nav-link" data-page="assignments">📝 Assignments</button></li>
+          <li><button class="nav-link" data-page="quizzes">❓ Quizzes</button></li>
+          <li><button class="nav-link" data-page="certificates">🏅 Certificates</button></li>
+          <li><button class="nav-link" data-page="schedule">📅 Study Schedule</button></li>
+          <li><button class="nav-link" data-page="profile">👤 Profile</button></li>
+          <li><button class="nav-link" data-page="settings">⚙️ Settings</button></li>
+          <li><button class="nav-link logout-link" id="sidebarLogout">🚪 Logout</button></li>
+        </ul>
+      </nav>
+    </aside>
+    <div id="overlay" class="overlay"></div>
+
+    <div class="main">
+      <!-- Top header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="menuToggle" class="icon-btn menu-toggle" aria-label="Open menu">☰</button>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="search-wrap">
+          <input type="search" id="globalSearch" placeholder="Search courses, topics..." aria-label="Search" autocomplete="off" />
+          <div id="searchResults" class="search-results hidden"></div>
+        </div>
+        <div class="topbar-right">
+          <div class="dropdown-wrap">
+            <button id="notifBtn" class="icon-btn" aria-label="Notifications">🔔<span id="notifCount" class="badge">0</span></button>
+            <div id="notifPanel" class="dropdown panel hidden">
+              <div class="panel-head"><strong>Notifications</strong><button id="markAllRead" class="link-btn">Mark all read</button></div>
+              <ul id="notifList"></ul>
+            </div>
+          </div>
+          <button id="msgBtn" class="icon-btn" aria-label="Messages">💬</button>
+          <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode">🌙</button>
+          <div class="dropdown-wrap">
+            <button id="profileBtn" class="profile-btn" aria-label="Profile menu">
+              <span class="avatar" id="headerAvatar">A</span>
+              <span id="headerName" class="profile-name">Arumugavalli</span> ▾
+            </button>
+            <div id="profileDropdown" class="dropdown hidden">
+              <button data-goto="profile">👤 My Profile</button>
+              <button data-goto="settings">⚙️ Settings</button>
+              <button id="dropdownLogout">🚪 Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- DASHBOARD -->
+        <section id="page-dashboard" class="page active">
+          <div class="welcome">
+            <div>
+              <h2>Welcome back, <span class="studentFirstName">Arumugavalli</span>! 👋</h2>
+              <p>Continue your learning journey and achieve your goals.</p>
+            </div>
+            <button class="btn light" data-goto="explore">Explore Courses</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card"><span class="stat-icon">📚</span><div><p>Enrolled Courses</p><h3 id="statEnrolled">0</h3></div></div>
+            <div class="stat-card"><span class="stat-icon">✅</span><div><p>Completed Courses</p><h3 id="statCompleted">0</h3></div></div>
+            <div class="stat-card"><span class="stat-icon">⏱️</span><div><p>Learning Hours</p><h3 id="statHours">0</h3></div></div>
+            <div class="stat-card"><span class="stat-icon">🏅</span><div><p>Certificates</p><h3 id="statCerts">0</h3></div></div>
+          </div>
+          <h2 class="section-title">Continue Learning</h2>
+          <div id="continueGrid" class="card-grid"></div>
+          <h2 class="section-title">Recommended Courses</h2>
+          <div id="recommendedGrid" class="card-grid"></div>
+        </section>
+
+        <!-- MY COURSES -->
+        <section id="page-mycourses" class="page">
+          <div class="filter-row" id="myCourseFilters">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="progress">In Progress</button>
+            <button class="chip" data-filter="completed">Completed</button>
+            <button class="chip" data-filter="notstarted">Not Started</button>
+          </div>
+          <div id="myCoursesGrid" class="card-grid"></div>
+        </section>
+
+        <!-- EXPLORE -->
+        <section id="page-explore" class="page">
+          <div class="filter-row" id="categoryFilters"></div>
+          <div class="toolbar">
+            <input type="search" id="exploreSearch" placeholder="Search course by name..." />
+            <select id="difficultyFilter">
+              <option value="all">All Levels</option>
+              <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+            </select>
+            <select id="sortSelect">
+              <option value="popular">Most Popular</option>
+              <option value="rating">Highest Rated</option>
+              <option value="name">Name (A–Z)</option>
+              <option value="short">Shortest Duration</option>
+            </select>
+          </div>
+          <div id="exploreGrid" class="card-grid"></div>
+        </section>
+
+        <!-- COURSE DETAILS -->
+        <section id="page-course" class="page">
+          <button class="btn ghost" id="backBtn">← Back</button>
+          <div id="courseDetail"></div>
+        </section>
+
+        <!-- PROGRESS -->
+        <section id="page-progress" class="page">
+          <div class="stats-grid">
+            <div class="stat-card"><span class="stat-icon">🎯</span><div><p>Overall Progress</p><h3 id="progOverall">0%</h3></div></div>
+            <div class="stat-card"><span class="stat-icon">⏱️</span><div><p>Learning Hours</p><h3 id="progHours">0 hrs</h3></div></div>
+            <div class="stat-card"><span class="stat-icon">✅</span><div><p>Courses Completed</p><h3 id="progCourses">0</h3></div></div>
+            <div class="stat-card"><span class="stat-icon">📖</span><div><p>Lessons Completed</p><h3 id="progLessons">0</h3></div></div>
+          </div>
+          <div class="two-col">
+            <div class="card"><h3>Subject Progress</h3><div id="subjectBars"></div></div>
+            <div class="card"><h3>Weekly Learning Activity (hours)</h3><div id="weeklyChart" class="bar-chart"></div></div>
+          </div>
+        </section>
+
+        <!-- ASSIGNMENTS -->
+        <section id="page-assignments" class="page">
+          <div class="card table-card">
+            <table class="table">
+              <thead><tr><th>Assignment</th><th>Course</th><th>Due Date</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="assignmentBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- QUIZZES -->
+        <section id="page-quizzes" class="page">
+          <div class="filter-row" id="quizCategories"></div>
+          <div id="quizArea" class="card quiz-card"></div>
+          <div class="card"><h3>Previous Scores</h3><ul id="quizHistory" class="simple-list"></ul></div>
+        </section>
+
+        <!-- CERTIFICATES -->
+        <section id="page-certificates" class="page">
+          <div id="certGrid" class="card-grid wide"></div>
+        </section>
+
+        <!-- SCHEDULE -->
+        <section id="page-schedule" class="page">
+          <div class="toolbar"><button class="btn primary" id="addScheduleBtn">+ Add Schedule</button></div>
+          <div id="scheduleGrid" class="schedule-grid"></div>
+        </section>
+
+        <!-- PROFILE -->
+        <section id="page-profile" class="page">
+          <div class="card profile-card">
+            <div class="avatar huge" id="profileAvatar">A</div>
+            <h2 id="profileName">Arumugavalli K G</h2>
+            <p class="muted" id="profileDegree">B.E Electronics and Communication Engineering</p>
+            <div class="profile-info" id="profileInfo"></div>
+            <button class="btn primary" id="editProfileBtn">Edit Profile</button>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="page-settings" class="page">
+          <div class="card settings-card">
+            <h3>Appearance</h3>
+            <label class="switch-row">Dark Mode <input type="checkbox" id="setDark" /></label>
+            <h3>Notifications</h3>
+            <label class="switch-row">Email Notifications <input type="checkbox" id="setEmail" /></label>
+            <label class="switch-row">Assignment Reminders <input type="checkbox" id="setAssign" /></label>
+            <label class="switch-row">Course Updates <input type="checkbox" id="setUpdates" /></label>
+            <h3>Language</h3>
+            <select id="setLanguage"><option>English</option><option>Tamil</option><option>Hindi</option></select>
+            <h3>Account</h3>
+            <div class="btn-row">
+              <button class="btn ghost" id="changePwBtn">Change Password</button>
+              <button class="btn danger" id="resetDataBtn">Reset All Data</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ================= MODAL ================= -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- ================= TOASTS ================= -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
